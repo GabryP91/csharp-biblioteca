@@ -43,8 +43,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Autore.cs" />
+    <Compile Include="Biblioteca.cs" />
+    <Compile Include="Documento.cs" />
+    <Compile Include="DVD.cs" />
+    <Compile Include="Libro.cs" />
+    <Compile Include="Prestito.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utente.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
