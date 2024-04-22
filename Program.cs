@@ -98,7 +98,7 @@ namespace csharp_biblioteca
             Console.WriteLine("\nDigita il titolo da ricercare:");
             title = Console.ReadLine();
 
-            //funzione per la ricerca di tutti i prestiti associati ad un utente
+            //funzione ricerca per titolo
             FindTitle(title, biblioteca);
 
             Console.WriteLine("\nDigita il cognome utente da ricercare:");
