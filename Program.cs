@@ -26,6 +26,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -37,27 +38,34 @@ namespace csharp_biblioteca
         {
             Biblioteca biblioteca = new Biblioteca();
 
-            int TotUser,TotBook;
+            int totUser,totBook;
+
+            string nameUser, surnUser;
 
             Utente utente = null;
 
             //creazione documento (LIBRO)
-            Documento libro = new Libro();
+        
+            Libro libro = null;
 
-            libro = null;
+            //ottengo la data corrente e la memorizzo in una opportuna variabile
+            DateTime oggi = DateTime.Today;
+
+            //ottengo la data corrente e la memorizzo in una opportuna variabile incrementata di uno
+            DateTime domani = oggi.AddDays(1);
 
             Console.WriteLine("\nQuanti utenti si vogliono inserire?:");
             //controllo sull'input dell'utente, se quello che è stato digitato non è un numero darà errore
-            while (int.TryParse(Console.ReadLine(), out TotUser) == false)
+            while (int.TryParse(Console.ReadLine(), out totUser) == false)
             {
                 Console.WriteLine("Sintassi errata. Inserisci numero");
             }
 
-            for (int i = 0; i < TotUser; i++)
+            for (int i = 0; i < totUser; i++)
             {
 
                 
-                Console.WriteLine($"Inserimento utente {i + 1} di {TotUser}:");
+                Console.WriteLine($"Inserimento utente {i + 1} di {totUser}:");
 
                 utente = Population();
 
@@ -67,15 +75,15 @@ namespace csharp_biblioteca
 
             Console.WriteLine("\nQuanti libri si vogliono inserire?:");
             //controllo sull'input dell'utente, se quello che è stato digitato non è un numero darà errore
-            while (int.TryParse(Console.ReadLine(), out TotBook) == false)
+            while (int.TryParse(Console.ReadLine(), out totBook) == false)
             {
                 Console.WriteLine("Sintassi errata. Inserisci numero");
             }
 
-            for (int i = 0; i < TotBook; i++)
+            for (int i = 0; i < totBook; i++)
             {
 
-                Console.WriteLine($"Inserimento utente {i + 1} di {TotBook}:");
+                Console.WriteLine($"Inserimento utente {i + 1} di {totBook}:");
 
                 libro = PopulationBook();
 
@@ -83,16 +91,10 @@ namespace csharp_biblioteca
                 biblioteca.AggiungiDocumento(libro);
             }
 
+            //funzione per registrare prestito
+            Register(biblioteca,oggi, domani);
 
-          
-            //ottengo la data corrente e la memorizzo in una opportuna variabile
-            DateTime oggi = DateTime.Today;
-
-            //ottengo la data corrente e la memorizzo in una opportuna variabile incrementata di uno
-            DateTime domani = oggi.AddDays(1);
-
-            //inserimento in biblioteca nuovo presito
-            biblioteca.RegistraPrestito(utente, libro, oggi, domani);
+            
 
             // Ricerca documenti per titolo
             List<Documento> documentiRicerca = biblioteca.CercaDocumentiPerTitolo("Il signore degli anelli");
@@ -102,15 +104,15 @@ namespace csharp_biblioteca
                 Console.WriteLine($"Titolo: {doc.Titolo}, Autore: {doc.Autore.Nome} {doc.Autore.Cognome}");
             }
 
-            // Ricerca prestiti per utente
-            List<Prestito> prestitiUtente = biblioteca.CercaPrestitiPerUtente("Mario", "Rossi");
-
-            foreach (Prestito prestito in prestitiUtente)
-            {
-                Console.WriteLine($"Utente: {prestito.Utente.Nome} {prestito.Utente.Cognome}, Documento: {prestito.Documento.Titolo}, Dal: {prestito.Dal}, Al: {prestito.Al}");
-            }
 
 
+            Console.WriteLine("\nDigita il cognome utente da ricercare:");
+            surnUser = Console.ReadLine();
+            Console.WriteLine("\nDigita il nome utente da ricercare:");
+            nameUser = Console.ReadLine();
+
+            //funzione per la ricerca di tutti i prestiti associati ad un utente
+            FindUser(nameUser, surnUser, biblioteca);
 
             Console.ReadKey();
         }
@@ -189,6 +191,43 @@ namespace csharp_biblioteca
                 Num_pag = tot_page
             };
 
+
+        }
+
+        static void Register(Biblioteca biblioteca, DateTime oggi, DateTime domani)
+        {
+
+            foreach (Utente utente in biblioteca.Utenti)
+            {
+                foreach (Documento libro in biblioteca.Documenti)
+                {
+                    //inserimento in biblioteca nuovo presito
+                    biblioteca.RegistraPrestito(utente, libro, oggi, domani);
+                }
+            }
+            
+        }
+
+        //ricerca informazioni sul prestito in base al nome e cognome utente passato 
+        static void FindUser(string nameUser, string surnUser, Biblioteca biblioteca)
+        {
+            // Ricerca prestiti per utente
+            List<Prestito> prestitiUtente = biblioteca.CercaPrestitiPerUtente(nameUser, surnUser);
+            
+            //se la lista è vuota
+            if (prestitiUtente.Count == 0)
+            {
+                Console.WriteLine("L'utente selezionato non ha effettuato prestiti");
+
+            }
+            else
+            {
+                foreach (Prestito prestito in prestitiUtente)
+                {
+                    Console.WriteLine($"Utente: {prestito.Utente.Nome} {prestito.Utente.Cognome}, Documento: {prestito.Documento.Titolo}, Dal: {prestito.Dal}, Al: {prestito.Al}");
+                }
+            }
+         
 
         }
 

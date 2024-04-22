@@ -58,5 +58,17 @@ namespace csharp_biblioteca
             return this.prestiti.FindAll(prestito => prestito.Utente.Nome == nome && prestito.Utente.Cognome == cognome);
         }
 
+        // Getter per la lista degli utenti
+        public List<Utente> Utenti
+        {
+            get { return this.utenti; }
+        }
+
+        // Getter per la lista degli documenti
+        public List<Documento> Documenti
+        {
+            get { return this.documenti; }
+        }
+
     }
 }
