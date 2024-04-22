@@ -65,7 +65,7 @@ namespace csharp_biblioteca
                 biblioteca.AggiungiUtente(utente);
             }
 
-            Console.WriteLine("\nQuanti libri si vogliono inseire?:");
+            Console.WriteLine("\nQuanti libri si vogliono inserire?:");
             //controllo sull'input dell'utente, se quello che è stato digitato non è un numero darà errore
             while (int.TryParse(Console.ReadLine(), out TotBook) == false)
             {
@@ -85,7 +85,6 @@ namespace csharp_biblioteca
 
 
           
-           
             //ottengo la data corrente e la memorizzo in una opportuna variabile
             DateTime oggi = DateTime.Today;
 
