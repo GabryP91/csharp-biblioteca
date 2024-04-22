@@ -40,7 +40,7 @@ namespace csharp_biblioteca
 
             int totUser,totBook;
 
-            string nameUser, surnUser;
+            string nameUser, surnUser,title;
 
             Utente utente = null;
 
@@ -91,20 +91,15 @@ namespace csharp_biblioteca
                 biblioteca.AggiungiDocumento(libro);
             }
 
+
             //funzione per registrare prestito
             Register(biblioteca,oggi, domani);
-
             
+            Console.WriteLine("\nDigita il titolo da ricercare:");
+            title = Console.ReadLine();
 
-            // Ricerca documenti per titolo
-            List<Documento> documentiRicerca = biblioteca.CercaDocumentiPerTitolo("Il signore degli anelli");
-
-            foreach (Documento doc in documentiRicerca)
-            {
-                Console.WriteLine($"Titolo: {doc.Titolo}, Autore: {doc.Autore.Nome} {doc.Autore.Cognome}");
-            }
-
-
+            //funzione per la ricerca di tutti i prestiti associati ad un utente
+            FindTitle(title, biblioteca);
 
             Console.WriteLine("\nDigita il cognome utente da ricercare:");
             surnUser = Console.ReadLine();
@@ -207,7 +202,26 @@ namespace csharp_biblioteca
             }
             
         }
+        static void FindTitle(string title, Biblioteca biblioteca)
+        {
+            // Ricerca documenti per titolo
+            List<Documento> documentiRicerca = biblioteca.CercaDocumentiPerTitolo(title);
 
+            //se la lista è vuota
+            if (documentiRicerca.Count == 0)
+            {
+                Console.WriteLine("Titolo non presente");
+
+            }
+            else
+            {
+                foreach (Documento doc in documentiRicerca)
+                {
+                    Console.WriteLine($"Titolo: {doc.Titolo}, Autore: {doc.Autore.Nome} {doc.Autore.Cognome}");
+                }
+            }
+            
+        }
         //ricerca informazioni sul prestito in base al nome e cognome utente passato 
         static void FindUser(string nameUser, string surnUser, Biblioteca biblioteca)
         {
